@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  booking-service:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "9127:9127"
+    environment:
+      SPRING_APPLICATION_NAME: booking-service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/Bookingdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Beulah@333
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      - postgres
+    networks:
+      - atanet
+
+  postgres:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: Bookingdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Beulah@333
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - atanet
+
+networks:
+  atanet:
+
+volumes:
+  pgdata:
+
